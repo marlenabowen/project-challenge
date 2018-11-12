@@ -47,6 +47,7 @@ group :development, :test do
   gem 'capybara'
   gem 'pry'
   gem 'rails-controller-testing'
+  gem 'will_paginate'
 end
 
 group :development do
