@@ -1,5 +1,6 @@
 class DogsController < ApplicationController
   before_action :set_dog, only: [:show, :edit, :update, :destroy]
+  before_action :owner?, only: [:edit, :destroy]
 
   # GET /dogs
   # GET /dogs.json
@@ -75,5 +76,11 @@ class DogsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def dog_params
       params.require(:dog).permit(:name, :description, :images)
+    end
+
+    def owner?
+      if @dog.user.nil? || current_user != @dog.user
+        redirect_back fallback_location: root_path, notice: 'User is not owner'
+      end
     end
 end

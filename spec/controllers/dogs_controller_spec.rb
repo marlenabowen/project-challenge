@@ -26,4 +26,34 @@ RSpec.describe DogsController, type: :controller do
       }.to change(Dog,:count).by(1)
     end
   end
+
+  describe '#edit' do
+    context 'if the current user is the dog owner' do
+      it 'can edit the dog profile' do
+        dog = create(:dog, user: user)
+        get :edit, params: { id: dog.id }
+        expect(response).to render_template 'dogs/edit'
+      end
+    end
+
+    context 'if the current user is not the dog owner' do
+      let(:second_user) { create(:user) }
+
+      it 'can not edit the dog profile' do
+        dog = create(:dog, user: second_user)
+        get :edit, params: { id: dog.id }
+        expect(response).not_to render_template 'dogs/edit'
+      end
+    end
+
+    context 'if the user is not logged in' do
+      logout_user
+
+      it 'can not edit the dog profile' do
+        dog = create(:dog, user: user)
+        get :edit, params: { id: dog.id }
+        expect(response).not_to render_template 'dogs/edit'
+      end
+    end
+  end
 end
