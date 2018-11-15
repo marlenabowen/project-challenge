@@ -1,3 +1,7 @@
+<% if dog_iteration.index > 0 && dog_iteration.index % 2 == 0 %>
+  <%= image_tag("ad") %>
+<% end %>
+
 <a href="<%= url_for(dog) %>">
   <article>
     <h2 class="dog-name"><%= dog.name %></h2>
