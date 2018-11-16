@@ -56,4 +56,37 @@ RSpec.describe DogsController, type: :controller do
       end
     end
   end
+
+  describe '#like' do
+    context 'if the current user is the dog owner' do
+      it 'does not add a like to the dog' do
+        dog = create(:dog, user: user)
+        expect{
+          put :like, params: { id: dog.id }
+        }.not_to change(dog.get_likes,:count)
+      end
+    end
+
+    context 'if the current user is not the dog owner' do
+      let(:second_user) { create(:user) }
+
+      it 'adds a like to the dog' do
+        dog = create(:dog, user: second_user)
+        expect{
+          put :like, params: { id: dog.id }
+        }.to change(dog.get_likes,:count).by(1)
+      end
+    end
+
+    context 'if the user is not logged in' do
+      logout_user
+
+      it 'does not add a like to the dog' do
+        dog = create(:dog, user: user)
+        expect{
+          put :like, params: { id: dog.id }
+        }.not_to change(dog.get_likes,:count)
+      end
+    end
+  end
 end

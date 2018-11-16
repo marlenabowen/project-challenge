@@ -41,6 +41,13 @@ class DogsController < ApplicationController
     end
   end
 
+  def like
+    @dog = Dog.find(params[:id])
+    return if @dog.user == current_user
+    @dog.liked_by current_user
+    redirect_back fallback_location: root_path
+  end
+
   # PATCH/PUT /dogs/1
   # PATCH/PUT /dogs/1.json
   def update

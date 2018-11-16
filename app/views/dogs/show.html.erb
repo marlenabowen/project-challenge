@@ -12,4 +12,12 @@
     <br>
     <%= link_to "Delete #{@dog.name}'s Profile", dog_path, method: :delete, data: { confirm: 'Are you sure?' } %>
   <% end %>
+
+  <% unless owner?(@dog) %>
+    <%= link_to like_dog_path(@dog), method: :put do %>
+      Like
+    <% end %>
+  <% end %>
+  <br>
+  <%= "Number of likes: #{@dog.get_likes.size}" %>
 </section>
